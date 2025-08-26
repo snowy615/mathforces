@@ -3,91 +3,61 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os
 import base64
-import re
 
-url = "https://cemc2.math.uwaterloo.ca/contest/PSG/school/print.php?ids=pc6a50907-f093-11ef-b0cc-005056bc&h=y&t=Gauss%20Gr.%208&type=solutions&openSolutions=false"
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
-
+URL = "https://cemc2.math.uwaterloo.ca/contest/PSG/school/print.php?ids=pc6a50907-f093-11ef-b0cc-005056bc&h=y&t=Gauss%20Gr.%208&type=solutions&openSolutions=false"
 IMAGE_DIR = "diagrams"
 os.makedirs(IMAGE_DIR, exist_ok=True)
 
-content = soup.find_all(["p", "img"])
+response = requests.get(URL)
+soup = BeautifulSoup(response.text, "html.parser")
+
 data_rows = []
+problems = soup.select("div.problemcontent > ol > li")
 
-qid = 1
-question_text = ""
-answer_choices = ""
-source = ""
-primary_topics = ""
-secondary_topics = ""
-answer = ""
-solution_text = ""
+for idx, problem in enumerate(problems):
+    qid = f"Q{idx}"
 
-for elem in content:
-    text = elem.get_text(strip=True) if elem.name != "img" else ""
+    # Extract question text (excluding answer choices)
+    question_parts = []
+    for child in problem.children:
+        if child.name == "ol" and "choices" in child.get("class", []):
+            break  # stop before choices
+        if hasattr(child, "get_text"):
+            question_parts.append(child.get_text(" ", strip=True))
+    question_text = " ".join(question_parts)
 
-    # Check for metadata lines in solution text
-    if text.startswith("Source:"):
-        source = text.replace("Source:", "").strip()
-        continue
-    elif text.startswith("Primary Topics:"):
-        primary_topics = text.replace("Primary Topics:", "").strip()
-        continue
-    elif text.startswith("Secondary Topics:"):
-        secondary_topics = text.replace("Secondary Topics:", "").strip()
-        continue
-    elif text.startswith("Answer:"):
-        answer = text.replace("Answer:", "").strip()
-        continue
-    elif text.startswith("Solution:"):
-        solution_text += text.replace("Solution:", "").strip() + "\n"
-        continue
+    # Extract answer choices
+    choices_list = []
+    choices_ol = problem.select_one("ol.choices")
+    if choices_ol:
+        for li in choices_ol.find_all("li", recursive=False):
+            choice_label = li.get("class", [""])[-1].replace("choice", "")
+            choice_text = li.get_text(" ", strip=True)
+            choices_list.append(f"{choice_label}: {choice_text}")
+    answer_choices = " | ".join(choices_list)
 
-    # Identify new question
-    if text.startswith(str(qid)):
-        if question_text:
-            data_rows.append({
-                "ID": f"Q{qid - 1}",
-                "Question": question_text.strip(),
-                "Answer Choices": answer_choices.strip(),
-                "Source": source,
-                "Primary Topics": primary_topics,
-                "Secondary Topics": secondary_topics,
-                "Answer": answer,
-                "Solution": solution_text.strip()
-            })
-            # Reset for next question
-            question_text = ""
-            answer_choices = ""
-            solution_text = ""
-            source = ""
-            primary_topics = ""
-            secondary_topics = ""
-            answer = ""
-        question_text = text
-        qid += 1
-    else:
-        # Append text to current question
-        question_text += "\n" + text
+    # Extract solution info (Source, Topics, Answer, Solution)
+    # These are often in the text of the page after problemcontent
+    solution_info = problem.find_next("div", class_="solution")
+    source = primary_topics = secondary_topics = answer = solution_text = ""
+    if solution_info:
+        text_lines = solution_info.get_text("\n", strip=True).split("\n")
+        for line in text_lines:
+            if line.startswith("Source:"):
+                source = line.replace("Source:", "").strip()
+            elif line.startswith("Primary Topics:"):
+                primary_topics = line.replace("Primary Topics:", "").strip()
+            elif line.startswith("Secondary Topics:"):
+                secondary_topics = line.replace("Secondary Topics:", "").strip()
+            elif line.startswith("Answer:"):
+                answer = line.replace("Answer:", "").strip()
+            else:
+                solution_text += line + "\n"
 
-    # Handle images
-    if elem.name == "img" and elem.get("src", "").startswith("data:image"):
-        img_data = elem["src"].split(",")[1]
-        img_bytes = base64.b64decode(img_data)
-        img_name = f"Q{qid - 1}_diagram.png"
-        img_path = os.path.join(IMAGE_DIR, img_name)
-        with open(img_path, "wb") as f:
-            f.write(img_bytes)
-        # Add diagram link to solution
-        solution_text += f"\n[Diagram: {img_path}]"
-
-# Save last question
-if question_text:
     data_rows.append({
-        "ID": f"Q{qid - 1}",
-        "Question": question_text.strip(),
-        "Answer Choices": answer_choices.strip(),
+        "ID": qid,
+        "Question": question_text,
+        "Answer Choices": answer_choices,
         "Source": source,
         "Primary Topics": primary_topics,
         "Secondary Topics": secondary_topics,
@@ -96,5 +66,5 @@ if question_text:
     })
 
 df = pd.DataFrame(data_rows)
-df.to_excel("Gauss_Grade8_corrected.xlsx", index=False)
-print("Excel file saved with correct classification!")
+df.to_excel("Gauss_Grade8_final.xlsx", index=False)
+print("Excel file saved with answer choices properly extracted!")
