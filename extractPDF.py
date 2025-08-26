@@ -1,37 +1,36 @@
-import fitz  # PyMuPDF for PDF text + image extraction
-import pandas as pd
+import fitz  # PyMuPDF
+import os
 from PIL import Image
 import io
-import os
 
-# Input and output files
 PDF_PATH = "2025Gauss8Contest.pdf"
-OUTPUT_EXCEL = "extracted_problems.xlsx"
-IMG_DIR = "extracted_images"
+OUTPUT_TEX = "gauss8_extracted.tex"
+IMG_DIR = "latex_images"
 
-# Create image folder if not exists
+# Create image folder
 os.makedirs(IMG_DIR, exist_ok=True)
 
-# Open PDF
 doc = fitz.open(PDF_PATH)
 
 problems = []
 problem_number = 0
 
-for page_num in range(len(doc)):
+# Process all pages except first (instructions)
+for page_num in range(1, len(doc)):
     page = doc[page_num]
     text = page.get_text("text")
 
-    # Split into problems (rough heuristic: problems numbered 1., 2., etc.)
+    # Split into questions by number patterns
     lines = text.split("\n")
     for line in lines:
-        if line.strip().startswith(tuple(str(i) for i in range(1, 26))):
+        line_stripped = line.strip()
+        if line_stripped.startswith(tuple(str(i) for i in range(1, 26))):
             problem_number += 1
-            problems.append({"ProblemNumber": problem_number, "Text": line.strip(), "ImagePath": ""})
+            problems.append({"ProblemNumber": problem_number, "Text": line_stripped, "Images": []})
         elif problem_number > 0:
-            problems[-1]["Text"] += " " + line.strip()
+            problems[-1]["Text"] += " " + line_stripped
 
-    # Extract images from page
+    # Extract images
     images = page.get_images(full=True)
     for img_index, img in enumerate(images):
         xref = img[0]
@@ -40,17 +39,33 @@ for page_num in range(len(doc)):
         img_ext = base_image["ext"]
         image = Image.open(io.BytesIO(image_bytes))
 
-        img_filename = f"{IMG_DIR}/page{page_num+1}_img{img_index+1}.{img_ext}"
+        img_filename = f"{IMG_DIR}/q{problem_number}p{page_num+1}{img_index+1}.{img_ext}"
         image.save(img_filename)
 
-        # Attach image to the last problem found on this page (approximate)
+        # Attach to current problem (approximation: last active problem)
         if problems:
-            problems[-1]["ImagePath"] = img_filename
+            problems[-1]["Images"].append(img_filename)
 
-# Save to Excel
-df = pd.DataFrame(problems)
+# Ensure exactly 25 problems
+problems = problems[:25]
 
-with pd.ExcelWriter(OUTPUT_EXCEL, engine="openpyxl") as writer:
-    df.to_excel(writer, index=False, sheet_name="Problems")
+# Write LaTeX file
+with open(OUTPUT_TEX, "w", encoding="utf-8") as f:
+    f.write(r"""\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\setlength{\parindent}{0pt}
+\begin{document}
+\section*{Extracted Gauss 8 Contest Problems}
+""")
 
-print(f"Extraction complete! Saved to {OUTPUT_EXCEL}")
+    for prob in problems:
+        f.write(f"\\textbf{{Problem {prob['ProblemNumber']}}} \\\\ \n")
+        f.write(prob["Text"].replace("", "\\") + "\n\n")
+        for img_path in prob["Images"]:
+            f.write(f"\\\\ \\includegraphics[width=0.7\\linewidth]{{{img_path}}}\n\n")
+        f.write("\\vspace{1em}\n\n")
+
+    f.write("\\end{document}")
+
+print(f"LaTeX file written to {OUTPUT_TEX}. Compile with: pdflatex {OUTPUT_TEX}")
