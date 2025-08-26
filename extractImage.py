@@ -66,6 +66,10 @@ for page_num in range(len(doc)):
     # Skip first page entirely (instructions page)
     if page_num == 0:
         continue
+    if page_num == 1:
+        cutoff = int(pix.height * 0.10)
+        img = img[cutoff:, :, :]
+
 
     page = doc[page_num]
 
