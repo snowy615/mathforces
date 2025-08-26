@@ -3,15 +3,15 @@ import cv2
 import numpy as np
 import os
 
-PDF_PATH = "2025Gauss8Contest.pdf"
-OUTPUT_DIR = "extracted_diagrams"
+PDF_PATH = "2023Gauss7Contest.pdf"
+OUTPUT_DIR = "2023_extracted_diagrams"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 doc = fitz.open(PDF_PATH)
 
 diagram_count = 0
-padding_ratio = 0.15  # 15% extra on each side
+padding_ratio = 0.18  # 15% extra on each side
 min_w, min_h = 80, 80  # allow slightly smaller diagrams
 
 def rect_area(r):
