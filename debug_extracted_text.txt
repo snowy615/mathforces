@@ -1,0 +1,277 @@
+
+--- PAGE 2 ---
+Grade 8
+Scoring:
+There is no penalty for an incorrect answer.
+Each unanswered question is worth 2, to a maximum of 10 unanswered questions.
+Part A: Each correct answer is worth 5.
+1.
+In the diagram, how many of the 24 circles are shaded?
+(A) 10
+(B) 12
+(C) 14
+(D) 16
+(E) 18
+2.
+Seong-hun had 36 dried apricot pieces that he gave to his 4 children. Each child
+received the same number of pieces. How many pieces did each child receive?
+(A) 12
+(B) 6
+(C) 3
+(D) 9
+(E) 10
+3.
+Recycling is picked up every two weeks. Recycling was last picked up on May 12.
+On what date is the recycling picked up next?
+(A) May 19
+(B) May 20
+(C) May 25
+(D) May 26
+(E) May 27
+4.
+At 8:45 a.m., Aisha starts a movie that is 2 hours and 45 minutes long. If she watches
+the movie all the way through without a pause or a break, at what time will it ﬁnish?
+(A) 10:30 a.m. (B) 11:15 a.m. (C) 11:30 a.m. (D) 10:50 a.m. (E) 10:45 a.m.
+5.
+If 7x −3 = 60, the value of x is
+(A) 9
+(B) 7
+(C) 10
+(D) 6
+(E) 8
+6.
+A ﬁgure is made by placing a triangle on top of a square,
+as shown. The triangle is coloured either red or yellow.
+The square is coloured either blue or purple or green.
+How many diﬀerent ways can the ﬁgure be coloured?
+(A) 5
+(B) 3
+(C) 9
+(D) 6
+(E) 2
+7.
+The point (5, 7) is plotted on the graph shown. When
+(5, 7) is reﬂected in the x-axis, the resulting point is
+(A) (5, −7)
+(B) (−5, −7)
+(C) (5, 7)
+(D) (7, 5)
+(E) (−7, −5)
+y
+x
+(5, 7)
+8.
+Each of Mrs. Myer’s students voted exactly once for
+their favourite season. Which of the following statements
+about the results in the graph shown is false?
+(A) Five students voted for Fall.
+(B) Winter received more votes than Spring.
+(C) Thirty-ﬁve students participated in this survey.
+(D) More than half of the students voted for Summer.
+(E) Fall and Spring received the same number of votes.
+10
+5
+Spring
+Fall
+Summer
+Winter
+Season
+Favourite Season
+Number of Students
+15
+0
+9.
+Ruhab wrote the list 5, 2, 8, 7, 9 and then erased one of the ﬁve digits. The sum of
+the remaining four digits was a multiple of 4. Which number did she erase?
+(A) 5
+(B) 2
+(C) 8
+(D) 7
+(E) 9
+
+--- PAGE 3 ---
+Grade 8
+10.
+An integer from 3 to 20, inclusive, is randomly selected. What is the probability that
+the integer selected is a perfect square?
+(A)
+3
+20
+(B) 1
+9
+(C) 1
+6
+(D)
+1
+10
+(E) 2
+9
+Part B: Each correct answer is worth 6.
+11.
+What number goes in the box so that 28
+32 + 1
+□= 1?
+(A) 24
+(B) −3
+(C) 7
+(D) 16
+(E) 8
+12.
+Leticia can walk 1.5 km in 20 minutes. Walking at this same rate, how far does
+Leticia walk in 4 hours?
+(A) 18 km
+(B) 30 km
+(C) 22.5 km
+(D) 15 km
+(E) 4.5 km
+13.
+A list of one-digit integers contains exactly one 1, two 2s, three 3s, four 4s, ﬁve 5s,
+and six 6s. What is the median of this list?
+(A) 2
+(B) 3
+(C) 4
+(D) 5
+(E) 6
+14.
+In the diagram, which of the following pairs of angles
+have measures whose sum is equal to 180◦?
+(A) w and z
+(B) x and y
+(C) u and x
+(D) t and y
+(E) s and x
+50°
+t
+u
+w
+x
+y
+z
+s
+15.
+The ages of three students are consecutive integers. Their mean (average) age is 13.
+A fourth student joins the group and the mean of their four ages is 14. How old is
+the fourth student?
+(A) 15
+(B) 18
+(C) 16
+(D) 14
+(E) 17
+16.
+At Doggy Daycare, there is one dog for every bowl of food, two dogs for every bowl
+of water, and three dogs for every bowl of treats. Every dog gets a serving of food,
+water and treats. If there are a total of 77 bowls, how many dogs are there?
+(A) 35
+(B) 77
+(C) 42
+(D) 11
+(E) 24
+17.
+Points B and D lie on sides AC and CE, respectively,
+of △ACE, as shown.
+If ∠CAE = ∠CBD = 90◦and
+CB = BD = DE, the measure of ∠ABE is
+(A) 60◦
+(B) 67.5◦
+(C) 70◦
+(D) 75◦
+(E) 52.5◦
+A
+B
+C
+D
+E
+18.
+Two standard six-sided dice are rolled.
+If the two numbers on the top faces are
+multiplied, which of the following products is most likely?
+(A) 4
+(B) 6
+(C) 9
+(D) 15
+(E) 8
+19.
+How many ordered pairs of positive integers (m, n) are there so that m2 × n = 2025?
+(A) 3
+(B) 7
+(C) 4
+(D) 5
+(E) 6
+
+--- PAGE 4 ---
+Grade 8
+20.
+In the diagram, each of a, b and c is greater than zero.
+Which of the following expressions is not equal to the
+perimeter of this polygon?
+(A) 4a + 4b
+(B) a + b + 7c
+(C) 8c
+(D) 2a + 2b + 4c
+(E) 3a + 3b + 2c
+a
+b
+c
+Part C: Each correct answer is worth 8.
+21.
+In the diagram, each letter from A to H is equal to a
+diﬀerent integer from 1 to 8. Also,
+• H is a perfect square and is 1 more than D
+• 5 and 8 are in the same row
+• C is a multiple of both G and D
+• B is the largest prime number in the set
+• The value of B + G is even
+What is the value of F?
+(A) 2
+(B) 6
+(C) 1
+(D) 7
+(E) 8
+A
+B
+C
+D
+E
+F
+G
+H
+22.
+ABCD has vertices A(−3, −2), B(0, r), C(6, 10), and D(s, t). AB is parallel to CD,
+BC is parallel to AD, and r < 0. What is the value of r + s + t?
+(A) 10
+(B) 11
+(C) 12
+(D) 13
+(E) 14
+23.
+The number 2013 is multiplied by a positive integer n. The last four digits of the
+result are 2025. What is the sum of the digits of the smallest possible value of n?
+(A) 17
+(B) 13
+(C) 15
+(D) 14
+(E) 16
+24.
+In the diagram, circles are connected if they are joined
+by a line segment. Each circle is ﬁlled with one integer
+so that
+• the positive diﬀerence between each pair of integers
+in connected circles is d, and
+• the sum of the ﬁve integers in the circles is 54.
+For how many diﬀerent values of d between 1 and 20
+inclusive can the circles be ﬁlled in this way?
+(A) 4
+(B) 12
+(C) 8
+(D) 20
+(E) 16
+25.
+The list 11, 12, 14, 23, 31, 44, 45, 46, 56, 64, 67, 74 can be arranged so that the
+units digit of each number matches the tens digit of the number that follows it. For
+example, 12, 23, 31, 11, 14, 44, 45, 56, 67, 74, 46, 64 is one such arrangement. How
+many such arrangements of the given list are possible?
+(A) 18
+(B) 24
+(C) 36
+(D) 30
+(E) 12
