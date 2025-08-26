@@ -11,7 +11,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 doc = fitz.open(PDF_PATH)
 
 diagram_count = 0
-padding = 30  # adjust padding for larger borders
+padding_ratio = 0.15  # 8% padding on each side
 
 for page_num in range(len(doc)):
     # Skip first page entirely
@@ -31,8 +31,7 @@ for page_num in range(len(doc)):
 
     # --- Skip top part of page 2 (instructions) ---
     if page_num == 1:
-        # Crop away the top 25% of page 2 before processing
-        cutoff = int(img.shape[0] * 0.25)
+        cutoff = int(img.shape[0] * 0.25)  # remove top 25% of page 2
         img = img[cutoff:, :, :]
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -44,13 +43,15 @@ for page_num in range(len(doc)):
     for i, cnt in enumerate(contours):
         x, y, w, h = cv2.boundingRect(cnt)
 
-        # Filter out tiny noise (only keep reasonably big boxes)
-        if w > 100 and h > 100:
-            # Expand bounding box with padding
-            x1 = max(x - padding, 0)
-            y1 = max(y - padding, 0)
-            x2 = min(x + w + padding, img.shape[1])
-            y2 = min(y + h + padding, img.shape[0])
+        if w > 100 and h > 100:  # filter out small noise
+            # Compute relative padding
+            pad_w = int(w * padding_ratio)
+            pad_h = int(h * padding_ratio)
+
+            x1 = max(x - pad_w, 0)
+            y1 = max(y - pad_h, 0)
+            x2 = min(x + w + pad_w, img.shape[1])
+            y2 = min(y + h + pad_h, img.shape[0])
 
             crop = img[y1:y2, x1:x2]
 
@@ -58,4 +59,4 @@ for page_num in range(len(doc)):
             cv2.imwrite(out_path, crop)
             diagram_count += 1
 
-print(f"✅ Extracted {diagram_count} diagrams into '{OUTPUT_DIR}' (skipped instructions)")
+print(f"✅ Extracted {diagram_count} diagrams into '{OUTPUT_DIR}' with ~{int(padding_ratio*100)}% extra borders")
