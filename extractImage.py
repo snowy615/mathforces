@@ -11,9 +11,13 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 doc = fitz.open(PDF_PATH)
 
 diagram_count = 0
-padding = 30  # adjust this value for larger borders
+padding = 30  # adjust padding for larger borders
 
 for page_num in range(len(doc)):
+    # Skip first page entirely
+    if page_num == 0:
+        continue
+
     page = doc[page_num]
 
     # Render page at 300 DPI
@@ -24,6 +28,12 @@ for page_num in range(len(doc)):
     img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
     if pix.n == 4:  # RGBA → RGB
         img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
+
+    # --- Skip top part of page 2 (instructions) ---
+    if page_num == 1:
+        # Crop away the top 25% of page 2 before processing
+        cutoff = int(img.shape[0] * 0.25)
+        img = img[cutoff:, :, :]
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     _, thresh = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
@@ -48,4 +58,4 @@ for page_num in range(len(doc)):
             cv2.imwrite(out_path, crop)
             diagram_count += 1
 
-print(f"✅ Extracted {diagram_count} diagrams into '{OUTPUT_DIR}' with padding={padding}px")
+print(f"✅ Extracted {diagram_count} diagrams into '{OUTPUT_DIR}' (skipped instructions)")
