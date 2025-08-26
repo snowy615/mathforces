@@ -1,34 +1,44 @@
 import fitz  # PyMuPDF
+import cv2
+import numpy as np
 import os
-from PIL import Image
-import io
 
 PDF_PATH = "2025Gauss8Contest.pdf"
-IMG_DIR = "extracted_images"
+OUTPUT_DIR = "extracted_diagrams"
 
-# Create folder for extracted images
-os.makedirs(IMG_DIR, exist_ok=True)
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Open PDF
 doc = fitz.open(PDF_PATH)
 
-image_count = 0
+diagram_count = 0
 
-# Loop through each page
 for page_num in range(len(doc)):
     page = doc[page_num]
-    images = page.get_images(full=True)
 
-    for img_index, img in enumerate(images):
-        xref = img[0]
-        base_image = doc.extract_image(xref)
-        image_bytes = base_image["image"]
+    # Render page at 300 DPI
+    zoom = 300 / 72
+    mat = fitz.Matrix(zoom, zoom)
+    pix = page.get_pixmap(matrix=mat, alpha=False)
 
-        # Always save as PNG
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+    if pix.n == 4:  # RGBA → RGB
+        img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
 
-        img_filename = f"{IMG_DIR}/page{page_num+1}_img{img_index+1}.png"
-        image.save(img_filename, "PNG")
-        image_count += 1
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    _, thresh = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
-print(f"✅ Extracted {image_count} images into '{IMG_DIR}'")
+    # Find contours
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for i, cnt in enumerate(contours):
+        x, y, w, h = cv2.boundingRect(cnt)
+
+        # Filter out tiny noise (only keep reasonably big boxes)
+        if w > 100 and h > 100:
+            crop = img[y:y+h, x:x+w]
+
+            out_path = f"{OUTPUT_DIR}/page{page_num+1}_diagram{i+1}.png"
+            cv2.imwrite(out_path, crop)
+            diagram_count += 1
+
+print(f"✅ Extracted {diagram_count} diagrams into '{OUTPUT_DIR}'")
