@@ -66,10 +66,6 @@ for page_num in range(len(doc)):
     # Skip first page entirely (instructions page)
     if page_num == 0:
         continue
-    if page_num == 1:
-        cutoff = int(pix.height * 0.10)
-        img = img[cutoff:, :, :]
-
 
     page = doc[page_num]
 
@@ -86,6 +82,10 @@ for page_num in range(len(doc)):
         img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
     elif pix.n == 1:
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+
+    if page_num == 1:
+        top = int(0.10 * img.shape[0])
+        img = img[top:, :, :]  # drop the top 10%
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     h_img, w_img = gray.shape
