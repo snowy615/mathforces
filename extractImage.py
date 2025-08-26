@@ -162,6 +162,7 @@ for page_idx in range(len(doc)):
         px2 = min(W, x2 + pad)
         py2 = min(H, y2 + pad)
 
+
         crop = img[py1:py2, px1:px2]
         out_path = os.path.join(OUTPUT_DIR, f"page{page_idx+1}_diagram{i}.png")
         cv2.imwrite(out_path, crop)
